@@ -28,7 +28,7 @@ public class Main {
         int min = array[0][0];
         int max = 0;
         int avg = 0;
-        int sizeArray = array.length * array.length;
+        int sizeArray = array.length * array[0].length;
 
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
