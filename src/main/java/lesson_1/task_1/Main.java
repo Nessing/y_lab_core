@@ -26,7 +26,7 @@ public class Main {
 
     private static void searchingValues(int[][] array) {
         int min = array[0][0];
-        int max = 0;
+        int max = array[0][0];
         int avg = 0;
         int sizeArray = array.length * array[0].length;
 
