@@ -1,4 +1,4 @@
-package lesson_2.tast_1;
+package lesson_2.tasts;
 import java.util.*;
 import java.util.stream.Collectors;
 
