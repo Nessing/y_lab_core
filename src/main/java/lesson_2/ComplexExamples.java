@@ -1,8 +1,8 @@
 package lesson_2;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
+import java.util.stream.IntStream;
 
 public class ComplexExamples {
 
@@ -37,7 +37,7 @@ public class ComplexExamples {
         }
     }
 
-    private static Person[] RAW_DATA = new Person[]{
+    private static final Person[] RAW_DATA = new Person[]{
             new Person(0, "Harry"),
             new Person(0, "Harry"), // дубликат
             new Person(1, "Harry"), // тёзка
@@ -107,11 +107,11 @@ public class ComplexExamples {
         System.out.println();
 
         /** TASK 1 **/
-//        tast1(RAW_DATA);
+//        task_1(RAW_DATA);
 
         /** TASK 2 **/
-//        int[] array = new int[] {3, 4, 2, 7};
-//        tast2(array, 10);
+//        int[] array = new int[] {3, 4, 2, 7, 8};
+//        System.out.println(task_2(array, 10));
 
         /** TASK 3 **/
 //        System.out.println(fuzzySearch("car", "ca6$$#_rtwheel")); // true
@@ -161,52 +161,42 @@ public class ComplexExamples {
          */
     }
 
-    public static void tast1(Person[] persons) {
-        // убираются дубликаты
-        List<Person> person = Arrays.stream(persons)
+    public static void task_1(Person[] persons) {
+        Map<String, Long> list = Arrays.stream(persons)
+                .filter(Objects::nonNull)
                 .distinct()
-                .toList();
-        // группировка по имени
-        Map<String, List<Person>> map = person.stream()
-                .collect(Collectors.groupingBy(Person::getName));
-        // сортировка по имени
-        map = map.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        // печать в консоль
-        map.forEach((key, value) -> System.out.printf("Key: %s\nValue:%d\n", key, value.size()));
+                .collect(Collectors.groupingBy(Person::getName, TreeMap::new, Collectors.counting()));
+
+        list.forEach((key, value) -> System.out.printf("Key: %s\nValue:%d\n", key, value));
     }
 
-    public static void tast2(int[] array, int sum) {
+    public static List<Integer> task_2(int[] array, int sum) {
+        if (array.length == 0) throw new RuntimeException("The array was empty");
+
+        List<Integer> list  = new ArrayList<>();
+
         for (int i = 0; i < array.length; i++) {
-            int first = array[i];
             for (int j = i + 1; j < array.length; j++) {
-                int second = array[j];
-                if (first + second == sum) {
-                    System.out.printf("[%d, %d]\n", first, second);
-                    return;
+                if (array[i] + array[j] == sum) {
+                    list.add(array[i]);
+                    list.add(array[j]);
+                    return list;
                 }
             }
         }
-        System.out.println("Такой пары нет");
+        return null;
     }
 
     public static boolean fuzzySearch(String searching, String where) {
-        boolean result = false;
-        int point = 0;
-        for (int i = 0; i < searching.length(); i++) {
-            char first = searching.charAt(i);
-            result = false;
-            for (int j = point; j < where.length(); j++) {
-                char second = where.charAt(j);
-                if (first == second) {
-                    result = true;
-                    point = j + 1;
-                    break;
-                }
+        if (searching.length() == 0 || where.length() == 0) throw new RuntimeException("Strings were empty");
+
+        int index = 0;
+        for (int i = 0; i < where.length(); i++) {
+            if (searching.charAt(index) == where.charAt(i)) {
+                index++;
             }
-            if (!result) return false;
+            if (index == searching.length()) return true;
         }
-        return result;
+        return false;
     }
 }
