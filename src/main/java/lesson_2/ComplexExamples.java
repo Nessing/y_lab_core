@@ -107,7 +107,7 @@ public class ComplexExamples {
         System.out.println();
 
         /** TASK 1 **/
-//        task_1(RAW_DATA);
+        task_1(RAW_DATA);
 
         /** TASK 2 **/
 //        int[] array = new int[] {3, 4, 2, 7, 8};
@@ -167,7 +167,10 @@ public class ComplexExamples {
                 .distinct()
                 .collect(Collectors.groupingBy(Person::getName, TreeMap::new, Collectors.counting()));
 
-        list.forEach((key, value) -> System.out.printf("Key: %s\nValue:%d\n", key, value));
+        list.forEach(((key, value) -> {
+            System.out.println("Key: " + key);
+            System.out.println("Value:" + value);
+        }));
     }
 
     public static List<Integer> task_2(int[] array, int sum) {
