@@ -173,26 +173,37 @@ public class ComplexExamples {
         }));
     }
 
-    public static List<Integer> task_2(int[] array, int sum) {
-        if (array.length == 0) throw new RuntimeException("The array was empty");
+    public static int[] findPare(int[] array, int number) {
+        if (array != null) {
+            Arrays.sort(array);
+        } else return null;
 
-        List<Integer> list  = new ArrayList<>();
+        int leftPointer = 0;
+        int rightPointer = array.length - 1;
+        int sumNumbers;
 
-        for (int i = 0; i < array.length; i++) {
-            for (int j = i + 1; j < array.length; j++) {
-                if (array[i] + array[j] == sum) {
-                    list.add(array[i]);
-                    list.add(array[j]);
-                    return list;
-                }
+        while (leftPointer < rightPointer) {
+            sumNumbers = array[leftPointer] + array[rightPointer];
+            if (sumNumbers == number) {
+                return new int[]{array[leftPointer], array[rightPointer]};
+            }
+            if (sumNumbers < number) {
+                leftPointer++;
+            } else {
+                rightPointer++;
             }
         }
         return null;
     }
 
+    /*
+    Task3
+        Реализовать функцию нечеткого поиска
+     */
     public static boolean fuzzySearch(String searching, String where) {
-        if (searching.length() == 0 || where.length() == 0) throw new RuntimeException("Strings were empty");
-
+        if ((searching.isEmpty() || where.isEmpty())) {
+            return false;
+        }
         int index = 0;
         for (int i = 0; i < where.length(); i++) {
             if (searching.charAt(index) == where.charAt(i)) {
